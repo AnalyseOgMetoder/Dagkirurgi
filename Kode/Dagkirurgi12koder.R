@@ -5,13 +5,39 @@ source("DagkirurgiFunktioner.R")
 sti = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\Input\\Liste over SKS koder.csv"
 
 DATA <- udvalgteKoder(sti)
-DATA <- DATA %>% select(SKS,Beskrivelse,Speciale,Gruppe,Operation,Kategori,operationsID,patientID,kontaktID,samletktkID,proceduredato,antalSKS,antalSKSprim,antalOP,SKSkombi,primSKS,primBeskrivelse,primSpeciale,sghafd,Sygehus,Afdeling,Afsnit,indmaade,patienttype,medindlSK,inddatoSK,uddatoSK,liggetid,FORliggetid,adiag,dia01,sex,alderAar,sammesghafd,antalsghafd)
+DATA <- DATA %>% select(SKS,Beskrivelse,Speciale,Gruppe,Operation,Kategori,operationsID,patientID,kontaktID,samletktkID,proceduredato,antalSKS,antalP,antalPfuld,antalOP,SKSkombi,primSKS,primBeskrivelse,primSpeciale,sghafd,Sygehus,Afdeling,Afsnit,indmaade,patienttype,medindlSK,inddatoSK,uddatoSK,liggetid,FORliggetid,adiag,dia01,sex,alderAar,sammesghafd,antalsghafd)
 
 DATA <- DATA %>% filter(antalOP == 1, indmaade == 2, liggetid <= 10)
 
 DATA <- DATA %>% mutate(RegistreretPatienttype = ifelse(patienttype == 0,"Indlagt (reg)","Ambulant (reg)"), BeregnetPatienttype = ifelse(liggetid > 0,"Indlagt (beregnet)","Ambulant (beregnet)"))
+DATA1 <- DATA %>% mutate(RegistreretPatienttype = ifelse(patienttype == 0,"Indlagt (reg)","Ambulant (reg)"), BeregnetPatienttype = ifelse(liggetid > 0 | FORliggetid > 0,"Indlagt (beregnet)","Ambulant (beregnet)"))
+
+
 
 write.csv2(x = DATA, file = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\Resultater\\ResultaterORG10.csv")
+write.csv2(x = DATA1, file = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\Resultater\\ResultaterORG101.csv")
+
+
+kodeopslag = read.table(sti, header = TRUE, sep = ";")
+kodeopslag <- kodeopslag %>% mutate_all(as.character)
+
+NYDATA <- PDATA %>% filter(SKS %in% kodeopslag$SKS)
+
+# Tilfoej gruppe-, operations- og kategoribeskrivelser
+NYDATA <- merge(x = NYDATA, y = kodeopslag, x.all = TRUE)
+
+NYDATA <- NYDATA %>% select(SKS,Beskrivelse,Speciale,Gruppe,Operation,Kategori,operationsID,patientID,kontaktID,samletktkID,proceduredato,antalSKS,antalP,antalPfuld,antalOP,SKSkombi,primSKS,primBeskrivelse,primSpeciale,sghafd,Sygehus,Afdeling,Afsnit,indmaade,patienttype,medindlSK,inddatoSK,uddatoSK,liggetid,FORliggetid,adiag,dia01,sex,alderAar,sammesghafd,antalsghafd)
+
+NYDATA <- NYDATA %>% filter(antalOP == 1, indmaade == 2, liggetid <= 10)
+
+NYDATA <- NYDATA %>% mutate(RegistreretPatienttype = ifelse(patienttype == 0,"Indlagt (reg)","Ambulant (reg)"), BeregnetPatienttype = ifelse(liggetid > 0,"Indlagt (beregnet)","Ambulant (beregnet)"))
+NYDATA1 <- NYDATA %>% mutate(RegistreretPatienttype = ifelse(patienttype == 0,"Indlagt (reg)","Ambulant (reg)"), BeregnetPatienttype = ifelse(liggetid > 0 | FORliggetid > 0,"Indlagt (beregnet)","Ambulant (beregnet)"))
+
+
+write.csv2(x = NYDATA, file = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\Resultater\\ResultaterORG10_NYMODEL.csv")
+write.csv2(x = NYDATA1, file = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\Resultater\\ResultaterORG10_NYMODEL1.csv")
+
+
 
 
 udvalgteKoder <- function(sti){
@@ -38,7 +64,7 @@ udvalgteKoder <- function(sti){
   dbDisconnect(con)
   
   # Fjern procedurer som ikke er primaer, hvis dette er angivet
-  PROCEDUREDATA <- PROCEDUREDATA %>% filter(OPart == "P" | antalSKSprim == 0, SKS %in% kodeopslag$SKS)
+  PROCEDUREDATA <- PROCEDUREDATA %>% filter(OPart == "P" | antalPfuld == 0, SKS %in% kodeopslag$SKS)
   
   # Tilfoej gruppe-, operations- og kategoribeskrivelser
   PROCEDUREDATA <- merge(x = PROCEDUREDATA, y = kodeopslag, x.all = TRUE)
