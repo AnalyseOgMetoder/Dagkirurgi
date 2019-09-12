@@ -93,15 +93,3 @@ generereId<-function(idListe){
   return(idListeMdl)
   
 }
-
-
-# Omdoeber sygehusnavne i kolonnen col til forkortelser
-renameSGH<-function(col){
-  
-  recode(col,"Amager og Hvidovre Hospital" = "AHH","Bispebjerg og Frederiksberg Hospitaler" = "BFH",
-         "Bornholms Hospital" = "BH", "Herlev og Gentofte Hospital" = "HGH","Hospitalerne i Nordsjælland" = "NOH",
-         "Rigshospitalet" = "RH","Steno Diabetes Center" = "STENO","Region Hovedstadens Psykiatri" = "PSYKIATRI")
-
-}
-  
-  

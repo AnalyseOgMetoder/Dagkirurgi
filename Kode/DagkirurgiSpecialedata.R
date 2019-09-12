@@ -18,13 +18,18 @@ con <- dbConnect(odbc::odbc(),
 
 PDATA <- tbl(con, in_schema("Dagkirurgi","ELEK_P_PROCEDURER")) %>% collect()
 
+# Omdoeb sygehusnavne. NOH behandles separat pga ae
+PDATA$Sygehus <- recode(PDATA$Sygehus,"Amager og Hvidovre Hospital" = "AHH","Bispebjerg og Frederiksberg Hospitaler" = "BFH", "Bornholms Hospital" = "BH", 
+  "Herlev og Gentofte Hospital" = "HGH", "Rigshospitalet" = "RH","Steno Diabetes Center" = "STENO","Region Hovedstadens Psykiatri" = "PSYKIATRI")
+PDATA[grepl("Hospitalerne i", PDATA$Sygehus), "Sygehus"] <- "NOH"
+
+# Beregn noegletal per sks kode
 PDATA <- PDATA %>% group_by(SKS) %>% mutate(SKS_N = n(), KIR = sum(KIRafd == "Kirurgisk afdeling") / SKS_N) %>% ungroup()
-PDATA$Sygehus <- renameSGH(PDATA$Sygehus)
 
 TOTALTABEL <- PDATA %>%group_by(SKS) %>%
   mutate(Sygehus = "Total",
-         N = SKS_N, 
-         D = sum(liggetid == 0)/N,
+         N = SKS_N,
+         D = sum(liggetid == 0 & FORliggetid == 0)/N,
          ML = median(liggetid),
          TL = sum(liggetid)) %>% ungroup()
 
@@ -33,20 +38,20 @@ TOTALTABEL <- TOTALTABEL %>% filter(SKS_N >= 10) %>% select(SKS,Beskrivelse,Spec
 
 HOSPTABEL <- PDATA %>%group_by(SKS,Sygehus) %>% 
   mutate(N = n(), 
-         D = sum(liggetid == 0)/N,
+         D = sum(liggetid == 0 & FORliggetid == 0)/N,
          ML = median(liggetid),
          TL = sum(liggetid)) %>% ungroup() 
 
 HOSP_U10 <- HOSPTABEL %>% filter(SKS_N < 10) %>% select(SKS,Beskrivelse,Speciale,Sygehus,KIR,N,D,ML,TL) %>% distinct()
 HOSPTABEL <- HOSPTABEL %>% filter(SKS_N >= 10) %>% select(SKS,Beskrivelse,Speciale,Sygehus,KIR,N,D,ML,TL) %>% distinct()
 
+SAMLET_U10 <- rbind(TOTAL_U10,HOSP_U10)
+SAMLETTABEL <- rbind(TOTALTABEL,HOSPTABEL)
+
 rm(TOTALTABEL,TOTAL_U10,HOSPTABEL,HOSP_U10)
 
-SAMLET_U10 <- rbind(TOTAL_U10,HOSP_U10)
-SAMLETTABEL <- rbind(TOTALTABEL,HOSPTABEL) %>% filter()
-
-write.csv2(x = SAMLET_U10, file = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\Specialeu10DATA.csv")
-write.csv2(x = SAMLETTABEL, file = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\SpecialeDATA.csv")
+write.csv2(x = SAMLET_U10, file = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\Resultater\\Specialeu10DATA.csv")
+write.csv2(x = SAMLETTABEL, file = "L:\\LovbeskyttetMapper\\BogA - Analyse\\Dagkirurgi\\Resultater\\SpecialeDATA.csv")
 
 
 # EXPORTER DATA FOR OPERATIONER MED UKENDT P
@@ -64,7 +69,7 @@ colorder <- names(DOBBELTSGH)
 
 Opslag <- DOBBELTSGH %>% distinct(operationsID) %>% mutate(Sygehus = "") %>% arrange(operationsID)
 
-# Loop gennemgaar alle procedurer i PROCflereSKS og tilf?jer sks til primaer-beskrivelserne i OPtabel hvis de er P eller antalPrim = 0
+# Loop gennemgaar alle procedurer i PROCflereSKS og tilfoejer sks til primaer-beskrivelserne i OPtabel hvis de er P eller antalPrim = 0
 prevID <- 0
 oprow <- 0
 for (r in 1:nrow(DOBBELTSGH)){
