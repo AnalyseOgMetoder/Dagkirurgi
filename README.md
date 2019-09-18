@@ -28,22 +28,11 @@ dagkirurgi. *Dagkirurgi12koder.R* henter data for Region Hovedstaden for
 disse 10 udvalgte operationer samt 2 yderligere (knæ- og
 hoftealloplastik).  
 I scriptet beregnes antal overnatninger, som det samlede antal liggedage
-på tværs af patienternes kontaktoprettelser på hospitalet.
-
-**Dagkirurgi12koderGrafer.R**  
-Dette script genererer grafer til resultaterne for de 12 udvalgte koder
-fra *Dagkirurgi12koder.R*
-
-**DagkirurgiDataforberedelse.R**  
-Dette script udvider behandlingsområdet fra 12 udvalgte koder til
-samtlige udførte kirurgiske sks-koder i 2018. Der beregnes data for hver
-operationsID, som er defineret ud fra procedurer udført på samme kontakt
-den samme dag. Data kobles med kontaktdata, der beregnes antal
-overnatninger og id anonymiseres.  
-Tabellerne giver mulighed for udtræk til videre analysering af nuværende
-og potentiel udbredelse af dagkirurgien i Region Hovedstaden.
-Beregningerne og frasorteringskriterier er beskrevet i næste særskilte
-afsnit.
+på tværs af patienternes kontaktoprettelser på hospitalet. Data
+opsummeres i en række grafer. OBS: Ved denne præsentation er andelen af
+dagkirurgi defineret til 0 overnatninger efter operationen - i det
+videre arbejde er denne definition justeret til 0 overnatninger efter OG
+før operationen.
 
 **DagkirurgiFunktioner.R**  
 Indeholder hjælpefunktioner til databehandlingen i de øvrige scripts.  
@@ -54,6 +43,17 @@ overskriver tabellen med den nye og sletter backuppen.
 returnerer nøglen.  
 *renameSGH(col)* omdøber fulde sygehusnavne i en kolonne til
 forkortelser, fx Rigshospitalet -\> RH.
+
+**DagkirurgiGrunddata.R**  
+Dette script udvider behandlingsområdet fra 12 udvalgte koder til
+samtlige udførte kirurgiske sks-koder i 2018. Der beregnes data for hver
+operationsID, som er defineret ud fra procedurer udført på samme kontakt
+den samme dag. Data kobles med kontaktdata, der beregnes antal
+overnatninger og id anonymiseres.  
+Tabellerne giver mulighed for udtræk til videre analysering af nuværende
+og potentiel udbredelse af dagkirurgien i Region Hovedstaden.
+Beregningerne og frasorteringskriterier er beskrevet i næste særskilte
+afsnit.
 
 **DagkirurgiKategorisering.R**  
 Printer nogle tabeller til Excel, som kan bruges som oplæg til at
