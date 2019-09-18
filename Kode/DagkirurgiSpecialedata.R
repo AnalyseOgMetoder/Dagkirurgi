@@ -15,7 +15,6 @@ con <- dbConnect(odbc::odbc(),
 
 
 # EXPORTER DATA FOR ALLE SPECIALER OG GEM I TO TABELLER MINDST OG UNDER 10op
-
 PDATA <- tbl(con, in_schema("Dagkirurgi","ELEK_P_PROCEDURER")) %>% collect()
 
 # Omdoeb sygehusnavne. NOH behandles separat pga ae
@@ -69,7 +68,7 @@ colorder <- names(DOBBELTSGH)
 
 Opslag <- DOBBELTSGH %>% distinct(operationsID) %>% mutate(Sygehus = "") %>% arrange(operationsID)
 
-# Loop gennemgaar alle procedurer i PROCflereSKS og tilfoejer sks til primaer-beskrivelserne i OPtabel hvis de er P eller antalPrim = 0
+# Loop gennemgaar alle operationer i DOBBELTSGH og slår Sygehus sammen
 prevID <- 0
 oprow <- 0
 for (r in 1:nrow(DOBBELTSGH)){

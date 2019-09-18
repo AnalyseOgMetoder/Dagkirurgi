@@ -1,3 +1,31 @@
+# Henter data fra Analysedatabasen i schemaname.tablename
+getData <- function(schemaname, tablename){
+  
+  library(dplyr)
+  library(stringr)
+  library(dbplyr)
+  library(odbc)
+  
+  # Opretter forbindelse til analyse database
+  con <- dbConnect(odbc::odbc(), 
+                   Driver = "SQL Server", 
+                   Server = "RGHPRODAPP007\\RGHPRODAPP007",
+                   Database = "Analyse",
+                   encoding = "latin1")
+  
+  # EXPORTER DATA FOR ALLE SPECIALER OG GEM I TO TABELLER MINDST OG UNDER 10op
+  PDATA <- tbl(con, in_schema(schemaname,tablename)) %>% collect()
+  
+  # Afbryd forbindelsen
+  dbDisconnect(con)
+  remove(con)
+  
+  return(PDATA)
+  
+}
+
+
+
 # Gemmer data i Analysedatabasen i schemaname.tablename
 saveData <- function(data,schemaname, tablename, overwrite = FALSE){
   
