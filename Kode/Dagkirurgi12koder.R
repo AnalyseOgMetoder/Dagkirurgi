@@ -322,8 +322,8 @@ frekvensPrGruppe(datasaet=dagkirurgiA,
                  periodeVariabel="operationsDatoAar",
                  xVariablen="liggetid",
                  yVariablen="Operation",
-                 overskrift="Fordelingen af antal operationer mod antal liggedage",
-                 navnPaaXAksen="Liggedage",
+                 overskrift="Fordelingen af antal operationer mod antal overnatninger",
+                 navnPaaXAksen="Overnatninger efter operationen",
                  navnPaaYAksen="Antal operationer",
                  filtrerNulVaek=FALSE,
                  retXAkseTal = TRUE,
@@ -794,16 +794,16 @@ barplotEnVariabel<-function(datasaet,xVariablen,yVariablen,overskrift,navnPaaXAk
 summeretLiggedage<-aggregate(liggetid~Operation,data=dagkirurgiA,FUN=sum)%>%
   arrange(Operation)
 
-filSti<-paste0(outputmappe,"Samlet antal liggedage fordelt på operationstype ",tekstTilPdfNavn," ",format(Sys.time(),"%y%m%d %H%M"),".pdf")
+filSti<-paste0(outputmappe,"Samlet antal overnatninger fordelt på operationstype ",tekstTilPdfNavn," ",format(Sys.time(),"%y%m%d %H%M"),".pdf")
 
 pdf(filSti,width = 10,height = 5,bg = rgb(226,223,204,maxColorValue=255,alpha=255))
 
 barplotEnVariabel(datasaet = summeretLiggedage,
                   xVariablen = "Operation",
                   yVariablen = "liggetid",
-                  overskrift = "Samlet antal liggedage fordelt på operationstype",
+                  overskrift = "Samlet antal overnatninger efter operationen fordelt på operationstype",
                   navnPaaXAksen ="",
-                  navnPaaYAksen ="Liggedage")
+                  navnPaaYAksen ="Overnatninger")
 
 
 dev.off()
@@ -814,16 +814,16 @@ dev.off()
 summeretLiggedage<-aggregate(liggetid~Operation,data=dagkirurgiC,FUN=sum)%>%
   arrange(Operation)
 
-filSti<-paste0(outputmappe,"Samlet antal liggedage fordelt på operationstype ",tekstTilPdfNavn2," ",format(Sys.time(),"%y%m%d %H%M"),".pdf")
+filSti<-paste0(outputmappe,"Samlet antal overnatninger fordelt på operationstype ",tekstTilPdfNavn2," ",format(Sys.time(),"%y%m%d %H%M"),".pdf")
 
 pdf(filSti,width = 10,height = 5,bg = rgb(226,223,204,maxColorValue=255,alpha=255))
 
 barplotEnVariabel(datasaet = summeretLiggedage,
                   xVariablen = "Operation",
                   yVariablen = "liggetid",
-                  overskrift = "Samlet antal liggedage fordelt på operationstype",
+                  overskrift = "Samlet antal overnatninger efter operationen fordelt på operationstype",
                   navnPaaXAksen ="",
-                  navnPaaYAksen ="Liggedage")
+                  navnPaaYAksen ="Overnatninger")
 
 
 dev.off()
