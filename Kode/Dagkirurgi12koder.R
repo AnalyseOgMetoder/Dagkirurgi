@@ -672,7 +672,7 @@ procentGraf2<-function(datasaet,
       
       plot=barplot(tabelGrafA,beside = TRUE,las=2,col = voresFarver[1:length(yVariablen)],
                    ylim = c(0,ymax),#main = paste0(overskrift),#,"\n i ",b),
-                   cex.names = 0.8,xaxs="r",yaxs="r")
+                   cex.names = 0.8,xaxs="r",yaxs="r") 
       
       title(overskrift,adj = 0)
       title(ylab = navnPaaYAksen,font.lab=2,line = 3.2)
@@ -695,6 +695,7 @@ procentGraf2<-function(datasaet,
       
       if(beregnAndel){
         text(plot,(tabelGrafA+dataEtiketPla),paste0(tabelGrafB,"%"),cex = 0.6,font=1)
+        
         # samletTabel<-tabelGraf[1,]
         #samletTabel1<-rep(length(tabelGraf[1,]))
         samletTabel<-as.table(rbind(paste(tabelGraf[1,],samletVarNavn)))#,samletTabel1))
@@ -753,6 +754,41 @@ procentGraf2(datasaet =dagkirurgiC,
              filSti = paste0(outputmappe,"Dagkirurgi andel ambulant samlet ",tekstTilPdfNavn2," ",format(Sys.time(),"%y%m%d %H%M"),".pdf"))
 
 
+# MED LINJESKIFT I X-LABELS
+#dagkirurgiLINJESKIFT<-dagkirurgiB#%>%
+#  filter(Operation!="Hoftealloplastik")%>%
+#  filter(Operation!="Knæalloplastik")
+
+#linjeskiftTabel<-data.frame("Operation"=sort(unique(dagkirurgiLINJESKIFT$Operation)))%>%
+#  mutate(operationNavn=ifelse(Operation=="Rhinoplastik","Rhinoplastik",
+#                            ifelse(Operation=="Tonsillektomi","Tonsillektomi",
+#                                   ifelse(Operation=="Tilbagelægning af stomi","Tilbagelægning\naf stomi",
+#                                          ifelse(Operation=="Laparoskopisk galdeoperation","Laparoskopisk\ngaldeoperation",
+#                                                 ifelse(Operation=="Ureteroskopisk stenfjernelse","Ureteroskopisk\nstenfjernelse",
+#                                                        ifelse(Operation=="Laparoskopisk hysterectomi","Laparoskopisk\nhysterectomi",
+#                                                               ifelse(Operation=="Hysterectomi vaginalt","Hysterectomi\nvaginalt",
+#                                                                      ifelse(Operation=="Hofteskopi","Hofteskopi",
+#                                                                             ifelse(Operation=="ACL-rekonstruktion","ACL-\nrekonstruktion",
+#                                                                                    ifelse(Operation=="ERCP","ERCP",
+#                                                                                           ifelse(Operation=="Hoftealloplastik","Hoftealloplastik",
+#                                                                                                  ifelse(Operation=="Knæalloplastik","Knæalloplastik","Fejl")))))))))))))
+
+#dagkirurgiLINJESKIFT<-dagkirurgiLINJESKIFT %>% left_join(linjeskiftTabel,by="Operation")
+#dagkirurgiLINJESKIFT <- dagkirurgiLINJESKIFT %>% select(-c("Operation")) %>% rename(Operation = operationNavn)
+
+#procentGraf2(datasaet =dagkirurgiLINJESKIFT,
+#             periodeVariabel = "operationsDatoAar",
+#             # seperatGrafForHver = "Beskrivelse",
+#             xVariablen ="Operation",#"Sygehus"
+#             yVariablen = c("registreret","beregnet"),
+#             overskrift = "Andelen af ambulante operationer",
+#             navnPaaXAksen = "",
+#             navnPaaYAksen = "",
+#             beregnAndel=TRUE,
+#             samletVarNavn = "op",
+#             filSti = paste0(outputmappe,"Dagkirurgi andel ambulant samlet ",tekstTilPdfNavn2," ",format(Sys.time(),"%y%m%d %H%M"),".pdf"))
+
+
 
 # SAMLET ANTAL LIGGEDAGE
 
@@ -787,6 +823,7 @@ barplotEnVariabel<-function(datasaet,xVariablen,yVariablen,overskrift,navnPaaXAk
   title(xlab = navnPaaXAksen,line = 10,font.lab=2)
   title(overskrift,adj = 0, line = 0)
 }
+
 
 
 # Med Allo
