@@ -98,6 +98,35 @@ gennemgået flere operationer på samme dag. Patienterne frasorteres hvis
 primærproceduren ikke er entydig, og disse patienter vil næppe egne sig
 til dagkirurgi uanset.
 
+*samletktkID* ID der grupperer overlappende eller sammenhængende
+patientID, hvis patienten ikke har været hjemme fra hospitalet.
+
+*antalSKS*, *antalP* og *antalPfuld* antalSKS angiver antal SKS knyttet
+til samme operationsID, antalPfuld er procedurer hvor OPart = “P” og
+antalP er antallet af *forskellige* sks-koder knyttet til det givne
+operationsID hvor OPart = “P” eller antalPfuld = 0.
+
+*antalOP* Antal operationer under indlæggelsen, dvs. knyttet til
+samletktkID.
+
+*SKSkombi*, *primSKS* og *primSKSfuld* SKSkombi er alle SKS-koder
+knyttet til operationen, primSKS er alle forskellige primærprocedurer og
+primSKSfuld er alle primærprocedurer inkl. dubletter.
+
+*KIRafd*  
+Ikke alle procedurekoder der starter med K er reelle operationer, KIRafd
+angiver om den udførende afdeling er kirurgisk. Når data eksporteres
+beregnes variablen KIR, som er en indikator for hvor stor en andel af
+den givne procedure der er udført på en kirurgisk afdeling. Vurderingen
+af hvilke afdelinger der er kirurgiske er foretaget ud fra en manuel
+gennemgang af alle afdelinger ud fra de 10 hyppigste
+operationsprocedurer de hver især udfører.
+
+*medindlSK*, *inddatoSK* og *uddatoSK* Variable beregnet med
+samlet-kontakt funktionen der beregner dato for første og sidste dag af
+indlæggelsen på tværs af overlappende kontakter. medindlSK angiver om en
+eller flere af de overlappende kontakter er af typen indlagt.
+
 *liggetid*  
 Er for indlagte kontakter beregnet ud fra ind- og uddato, og ud fra
 ambdato for ambulante kontakter. For patienter med flere overlappende
@@ -105,12 +134,11 @@ kontaktoprettelser er disse datoer slået sammen. Denne liggetid tager
 højde for overlappende kontakteroprettelser, og er derfor mere nøjagtig
 end DRG kontakternes liggetider, samt registreringen ambulant/indlagt.
 
-*KIR*  
-Ikke alle procedurekoder der starter med K er reelle operationer. KIR er
-en indikator for hvor stor en andel af den givne procedure der er udført
-på en kirurgisk afdeling. Vurderingen af hvilke afdelinger der er
-kirurgiske er foretaget ud fra en manuel gennemgang af alle afdelinger
-ud fra de 10 hyppigste operationsprocedurer de hver især udfører.
+*FORliggetid* Angiver indlæggelsestiden forudgående for operationen.
+
+*antalsghafd* og *antalsghafdP0* Angiver antal forskellige producerende
+sygehusafdelinger knyttet til samme operationsID for hhv. alle de
+forskellige sks-koder og alle de primære/ingen-angivede procedurer.
 
 *Anonymisering*  
 Kolonnerne med operationsID, patientID og kontaktID er erstattet af nye
