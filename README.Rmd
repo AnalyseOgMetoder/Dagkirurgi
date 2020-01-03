@@ -87,6 +87,7 @@ Angiver antal forskellige producerende sygehusafdelinger knyttet til samme opera
 Kolonnerne med operationsID, patientID og kontaktID er erstattet af nye tilfældigt genererede id. Nøglen gemmes ikke.
 
 
+
 ### Frasorteret data
 Datagrundlaget på de 619.745 procedurer er blevet tildelt et operationsID, hvor primærproceduren identificeres og udvælges. Akutte patienter frasorteres, da disse ikke vil være relevante for dagkirurgiske afsnit. For at skærpe fokus yderligere, frasorteres sks-koder med mindre end 10 udførte primærprocedurer i 2018.
 
