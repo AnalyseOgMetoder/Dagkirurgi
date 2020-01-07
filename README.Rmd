@@ -58,7 +58,7 @@ Denne beregning vil være misvisende for patienter der har gennemgået flere ope
 ID der grupperer overlappende eller sammenhængende patientID, hvis patienten ikke har været hjemme fra hospitalet.
 
 *antalSKS*, *antalP* og *antalPfuld*  
-antalSKS angiver antal SKS knyttet til samme operationsID, antalPfuld er procedurer hvor OPart = "P" og antalP er antallet af *forskellige* sks-koder knyttet til det givne operationsID hvor OPart = "P" eller antalPfuld = 0.
+antalSKS angiver antal SKS knyttet til samme operationsID, antalPfuld er procedurer hvor OPart = "P" og antalP er antallet af forskellige sks-koder knyttet til det givne operationsID hvor OPart = "P" eller antalPfuld = 0.
 
 *antalOP*  
 Antal operationer under indlæggelsen, dvs. knyttet til samletktkID.

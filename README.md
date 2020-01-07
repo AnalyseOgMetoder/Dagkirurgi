@@ -104,7 +104,7 @@ patienten ikke har været hjemme fra hospitalet.
 
 *antalSKS*, *antalP* og *antalPfuld*  
 antalSKS angiver antal SKS knyttet til samme operationsID, antalPfuld er
-procedurer hvor OPart = “P” og antalP er antallet af *forskellige*
+procedurer hvor OPart = “P” og antalP er antallet af forskellige
 sks-koder knyttet til det givne operationsID hvor OPart = “P” eller
 antalPfuld = 0.
 
